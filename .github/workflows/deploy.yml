@@ -1,0 +1,48 @@
+name: Desplegar EC2 con Terraform
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      # Paso 1: Checkout del repositorio
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Paso 2: Configuración de Terraform
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      # Paso 3: Configurar credenciales de AWS
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
+
+      # Paso 4: Terraform init
+      - name: Terraform Init
+        run: terraform init
+
+      # Paso 5: Terraform fmt para validar formato
+      - name: Terraform FMT
+        run: terraform fmt -check
+
+      # Paso 6: Terraform validate para verificar sintaxis
+      - name: Terraform Validate
+        run: terraform validate
+
+      # Paso 7: Terraform plan para mostrar cambios
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+
+      # Paso 8: Terraform apply para aplicar los cambios
+      - name: Terraform Apply
+        run: terraform apply -auto-approve tfplan
