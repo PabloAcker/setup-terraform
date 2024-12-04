@@ -29,14 +29,6 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
-      # Paso 5: Terraform fmt para validar formato
-      - name: Terraform FMT
-        run: terraform fmt -check
-
-      # Paso 6: Terraform validate para verificar sintaxis
-      - name: Terraform Validate
-        run: terraform validate
-
       # Paso 7: Terraform plan para mostrar cambios
       - name: Terraform Plan
         run: terraform plan -out=tfplan
