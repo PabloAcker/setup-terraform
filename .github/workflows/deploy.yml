@@ -1,9 +1,7 @@
 name: Desplegar EC2 con Terraform
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   deploy:
